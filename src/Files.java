@@ -5,17 +5,22 @@ import java.io.IOException;
 public class Files {
     public void write(){
         CsvWriter csvWriter = null;
+        Input input = new Input();
+        int exit=0;
         try{
             csvWriter = new CsvWriter("MyFile.csv");
-            csvWriter.write("CLAVE");
-            csvWriter.write("DESCRIPCION");
-            csvWriter.write("PRECIO");
+            csvWriter.write("ID");
+            csvWriter.write("DESCRIPTION");
+            csvWriter.write("PRICE");
             csvWriter.endRecord();
 
-            csvWriter.write("100");
-            csvWriter.write("LECHE");
-            csvWriter.write("13.50");
-            csvWriter.endRecord();
+            do {
+                csvWriter.write(input.readString("Please, input an ID"));
+                csvWriter.write(input.readString("Please, input a description"));
+                csvWriter.write(input.readString("Please, input a price"));
+                csvWriter.endRecord();
+                exit=input.readInt("Would you like to add another entry\n[0 - NO]\t[1 - yes]");
+            }while (exit!=0);
         }catch(IOException e){
             System.out.println("Error: " + e.getMessage());
         }finally {
@@ -29,10 +34,9 @@ public class Files {
             csvReader = new CsvReader("MyFile.csv");
             csvReader.readHeaders();
             while(csvReader.readRecord()){
-                System.out.println("CLAVE-------------------:"+csvReader.get("CLAVE"));
-                System.out.println("DESCRIPCION-------------:"+csvReader.get("DESCRIPCION"));
-                System.out.println("PRECIO------------------:"+csvReader.get("PRECIO"));
-
+                System.out.println("ID-------------------:"+csvReader.get("ID"));
+                System.out.println("DESCRIPTION-------------:"+csvReader.get("DESCRIPTION"));
+                System.out.println("PRICE------------------:"+csvReader.get("PRICE")+"\n");
             }
         }catch(IOException e){
             System.out.println("Error: " + e.getMessage());
